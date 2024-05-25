@@ -13,7 +13,8 @@ export const GAME_OVER = "game_over";
 
 export const Game = () => {
     const socket = useSocket();
-    const [board,setBoard] = useState(new Chess());
+    const [chess , setChess] = useState(new Chess());
+    const [board , setBoard] = useState(chess.board())
     
     useEffect(() => {
         if(!socket){
@@ -24,12 +25,14 @@ export const Game = () => {
             console.log(message);
             switch(message.type){
                 case INIT_GAME:
-                    setBoard(new Chess())
+                    setChess(new Chess())
+                    setBoard(chess.board())
                     console.log("Game intilized");
                     break;
                 case MOVE:
-                    const move = message.pay
-                    board.move(move)
+                    const move = message.payload;
+                    chess.move(move);
+                    setBoard(chess.board())
                     console.log("Move Made");
                     break;
                 case GAME_OVER:

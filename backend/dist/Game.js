@@ -8,7 +8,7 @@ class Game {
         this.moveCount = 0;
         this.player1 = player1;
         this.player2 = player2;
-        this.baord = new chess_js_1.Chess();
+        this.board = new chess_js_1.Chess();
         this.startTime = new Date();
         this.player1.send(JSON.stringify({
             type: messages_1.INIT_GAME,
@@ -31,22 +31,22 @@ class Game {
             return;
         }
         try {
-            this.baord.move(move);
+            this.board.move(move);
             this.moveCount++;
         }
         catch (e) {
             return;
         }
-        if (this.baord.isGameOver()) {
+        if (this.board.isGameOver()) {
             this.player1.send(JSON.stringify({
                 type: messages_1.GAME_OVER,
                 paylaod: {
-                    winner: this.baord.turn() === "w" ? "black" : "white"
+                    winner: this.board.turn() === "w" ? "black" : "white"
                 }
             }));
             return;
         }
-        if (this.baord.moves.length % 2 === 0) {
+        if (this.board.moves.length % 2 === 0) {
             console.log("sent 1");
             this.player2.send(JSON.stringify({
                 type: messages_1.MOVE,
